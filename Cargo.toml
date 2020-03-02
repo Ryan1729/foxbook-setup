@@ -1,6 +1,6 @@
 [package]
 name = "foxbook-setup"
-version = "0.3.0"
+version = "0.4.0"
 authors = ["Ryan1729 <ryan1729@gmail.com>"]
 edition = "2018"
 
