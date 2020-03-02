@@ -6,11 +6,22 @@ and firefox may be all you need.
 
 ## Building this exectuable
 
-Install `rust` and `cargo` via [rustup.rs](https://rustup.rs/) and run
+Install `rust` and `cargo` via [rustup.rs](https://rustup.rs/).
+
+We aslo need to install the muslc target so based on instructions from [this page](https://doc.rust-lang.org/edition-guide/rust-2018/platform-and-target-support/musl-support-for-fully-static-binaries.html)
+you need to run 
 
 ```
-cargo build --release
+rustup target add x86_64-unknown-linux-musl
 ```
+
+to install it, then run
+
+```
+cargo build --target x86_64-unknown-linux-musl --release
+```
+
+to build it. The binary will be in the `target/release` folder.
 
 ## The Setup Procedure
 
