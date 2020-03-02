@@ -1,6 +1,6 @@
 # FoxBook setup
 
-This is the README for an exectuable that outputs shell scripts that can be used to setup a laptop to be immediately boot into 
+This is the README for an exectuable that outputs shell scripts that can be used to setup a laptop to be immediately booted into 
 firefox. The resulting machine will be able to do little else without installing extra stuff, but that will be possible,
 and firefox may be all you need.
 
@@ -8,8 +8,7 @@ and firefox may be all you need.
 
 Install `rust` and `cargo` via [rustup.rs](https://rustup.rs/).
 
-We aslo need to install the muslc target so based on instructions from [this page](https://doc.rust-lang.org/edition-guide/rust-2018/platform-and-target-support/musl-support-for-fully-static-binaries.html)
-you need to run 
+We also need to install the musl target. So you need to run 
 
 ```
 rustup target add x86_64-unknown-linux-musl
@@ -21,7 +20,8 @@ to install it, then run
 cargo build --target x86_64-unknown-linux-musl --release
 ```
 
-to build it. The binary will be in the `target/release` folder.
+to build it. The binary will be in the `target/x86_64-unknown-linux-musl/release` folder.
+These musl instructions were based on [this page](https://doc.rust-lang.org/edition-guide/rust-2018/platform-and-target-support/musl-support-for-fully-static-binaries.html)
 
 ## The Setup Procedure
 

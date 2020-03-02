@@ -44,6 +44,9 @@ die () {
 
 test ! -e temp || die 'Temp file already exists. Move it so it does not get overwritten.'
 
+sudo touch temp
+sudo chmod 666 temp
+
 #
 #    getting wifi working on next boot
 #
@@ -67,6 +70,8 @@ sudo setup-xorg-base
 # to not use certain ones
 sudo awk '/#h/ { print substr($1, 2, length($1)); next }1' /etc/apk/repositories > temp; sudo cat temp > /etc/apk/repositories
 
+rm temp
+
 # tell apk we updated the repositories file
 sudo apk update
 
@@ -78,10 +83,20 @@ exec i3" > ~/.xinitrc
 
 # start up graphical env to get the config written
 startx
+
 "#);           
         }
         Some("2") => {
            print!("{}", r#"
+die () {
+    echo $1; exit 1
+}
+
+test ! -e temp || die 'Temp file already exists. Move it so it does not get overwritten.'
+
+sudo touch temp
+sudo chmod 666 temp
+
 echo '# Prepend the prompt with the return code of the last run command 
 # and show username instead of computer name
 export PS1="\$? \u:\w$ "
@@ -93,6 +108,8 @@ fi' > ~/.profile
 
 # make firefox startup on boot
 sudo awk '/bindsym XF86AudioMicMute/ { print; print "\n# This is a fox book\nexec firefox"; next }1' ~/.config/i3/config > temp; sudo cat temp > ~/.config/i3/config
+
+rm temp
 "#);
         }
         Some(step) => {
