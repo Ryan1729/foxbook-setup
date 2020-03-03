@@ -27,21 +27,6 @@ cat temp > /etc/init.d/networking
 
 rc-update -u
 
-#
-#    allow all offical repositories
-#
-
-# We need to allow downloading from the community repositories, and the config for this is stored in
-# the /etc/apk/repositories file. You just need to uncomment (remove the leading hashes from in this case)
-# all the lines below the first one, to have access to all of the community repositories, incluing the 
-# bleeding edge ones. This script will allow all of them for you, but you can do this manually if you want
-# to not use certain ones
-awk '/#h/ {{ print substr($1, 2, length($1)); next }}1' /etc/apk/repositories > temp
-cat temp > /etc/apk/repositories
-
-# tell apk we updated the repositories file
-apk update
-
 rm temp
 
 #
@@ -74,7 +59,26 @@ source ~/.profile
 #    set up graphical environment for next boot
 #
 
-sudo setup-xorg-base
+setup-xorg-base
+
+#
+#    allow all offical non-edge repositories
+#
+
+# We need to allow downloading from the community repositories, and the config for this is stored in
+# the /etc/apk/repositories file. You just need to uncomment the single line contaiing the non-edge
+# community repo. This script will uncomment all lines starting with "#h" and which have a v elsewhere
+# which in this case, does the same job. This is admittedly a little ugly, and potentially fragile,
+# but it gets the job done, at least right now.
+awk '/^#h.*v.*/ {{ print substr($1, 2, length($1)); next }}1' /etc/apk/repositories > temp
+cat temp > /etc/apk/repositories
+
+# tell apk we updated the repositories file
+apk update
+
+#
+#    install window manager and firefox
+#
 
 sudo apk add firefox-esr ttf-dejavu i3wm dmenu i3status
 
