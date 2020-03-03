@@ -47,7 +47,7 @@ cd ~
             }
         }
         Some("1") => {
-            print!("{}", r#"
+            print!("{}", r###"
 echo '# Prepend the prompt with the return code of the last run command 
 # and show username instead of computer name
 export PS1="\$? \u:\w$ "
@@ -89,7 +89,7 @@ exec i3" > ~/.xinitrc
 # start up graphical env to get the config written
 startx
 
-"#);           
+"###);
         }
         Some("2") => {
            print!("{}", r#"

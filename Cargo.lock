@@ -2,5 +2,5 @@
 # It is not intended for manual editing.
 [[package]]
 name = "foxbook-setup"
-version = "0.2.0"
+version = "0.5.0"
 
