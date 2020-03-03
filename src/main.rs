@@ -33,11 +33,13 @@ rm temp
 #    add new user
 #
 
-adduser {0}
-apk add sudo nano
-awk '/root ALL=\(ALL\) ALL/ {{ print; print "{0} ALL=(ALL) ALL"; next }}1' /etc/sudoers > temp && cat temp > /etc/sudoers && rm temp
-su {0}
-cd ~
+echo 'adding the user with following command seems to leave the user with an unusable password. If that happens run `passwd {0}` to set your password, but you should be able to just run it interactively to have it work.'
+echo 'adduser {0}'
+
+echo 'after that next step is:'
+echo 'foxbook-setup 1 | ash'
+
+echo 'note that the next step needs you to type the exact same username.'
 "#, name);
                 }
                 None => {
@@ -47,6 +49,23 @@ cd ~
             }
         }
         Some("1") => {
+            match args.next() {
+                Some(name) => {
+                    print!("{}", r#"
+apk add sudo nano
+awk '/root ALL=\(ALL\) ALL/ {{ print; print "{0} ALL=(ALL) ALL"; next }}1' /etc/sudoers > temp && cat temp > /etc/sudoers && rm temp
+su {0}
+cd ~
+
+"#, name);
+                }
+                None => {
+                    println!("Step 1 requires the username from step 0");
+                    std::process::exit(2);
+                }
+            }
+        }
+        Some("2") => {
             print!("{}", r###"
 echo '# Prepend the prompt with the return code of the last run command 
 # and show username instead of computer name
@@ -59,20 +78,37 @@ source ~/.profile
 #    set up graphical environment for next boot
 #
 
-setup-xorg-base
+echo 'for some reason this built in script seemed to fail if run inside another script. You'll have to run it yourself.'
 
+echo 'sudo setup-xorg-base'
+
+echo 'after that next step is:'
+echo 'foxbook-setup 3 | ash'
+
+"###r);
+        }
+        Some("3") => {
+           print!("{}", r#"
 #
 #    allow all offical non-edge repositories
 #
 
-# We need to allow downloading from the community repositories, and the config for this is stored in
-# the /etc/apk/repositories file. You just need to uncomment the single line contaiing the non-edge
-# community repo. This script will uncomment all lines starting with "#h" and which have a v elsewhere
-# which in this case, does the same job. This is admittedly a little ugly, and potentially fragile,
-# but it gets the job done, at least right now.
-awk '/^#h.*v.*/ {{ print substr($1, 2, length($1)); next }}1' /etc/apk/repositories > temp
-cat temp > /etc/apk/repositories
+echo 'We need to allow downloading from the community repositories, and the config for this is stored in
+the /etc/apk/repositories file. You just need to uncomment the single line contaiing the non-edge
+community repo. Scripting this turned out to be suprisingly compilicated to do reliably, so you will again 
+have to do it yourself.'
 
+echo 'nano /etc/apk/repositories'
+
+echo 'next step is check the README with:'
+echo 'foxbook-setup'
+
+echo 'and once you know what to do run:'
+echo 'foxbook-setup 4 | ash'
+"#r);
+        }
+        Some("4") => {
+           print!("{}", r#"
 # tell apk we updated the repositories file
 apk update
 
@@ -91,7 +127,7 @@ startx
 
 "###);
         }
-        Some("2") => {
+        Some("5") => {
            print!("{}", r#"
 die () {
     echo $1; exit 1

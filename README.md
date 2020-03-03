@@ -45,15 +45,31 @@ rc-service wpa_supplicant start
 ```
 
 This script performs miscellaneous setup that is easier to perform as root, including attempting to make sure wireless
-internet access will work on the next boot. This sctipt also adds a non-root user with a name based on the second parameter.
+internet access will work on the next boot. This script also prompts you to add a user with the name you provide.
 
 ```
 foxbook-setup 0 myuser | ash
 ```
 
+### Step 1
+
+This script elevates the permissions of the user with the name based on the second parameter.
+
+```
+foxbook-setup 1 myuser | ash
+```
+
 Now you should be in your new account's home directory, and you can proceed to the next step.
 
-### Step 1
+### Step 2
+
+This script prompts you to run the built-in xorg setup script.
+
+```
+foxbook-setup 2 | ash
+```
+
+### Step 3
 
 This script installs and configures x11 and the i3 window manager. After running the script a graphical environment 
 should appear and you should be prompted to setup an i3wm config. The defaults should work so you can just press enter
@@ -61,14 +77,14 @@ throughout that. After that is done you will be presented with a blank screen an
 shutdown and restart the machine.
 
 ```
-foxbook-setup 1 | ash
+foxbook-setup 3 | ash
 ```
 
-### Step 2
+### Step 4
 
 This script will set Firefox to startup automatically on boot. You will need to either reboot or shutdown and restart
 the machine once more, but after this it should all work as expected.
 
 ```
-foxbook-setup 2 | ash
+foxbook-setup 4 | ash
 ```
